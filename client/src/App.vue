@@ -220,7 +220,7 @@ function stopGenerate() {
       <header class="hero hero-row">
         <div>
           <div class="title-badges">
-            <h1>AI 智能周报工作台</h1>
+            <h1>AI 智能工作复盘平台</h1>
             <el-tag type="success" effect="dark">Portfolio Edition</el-tag>
           </div>
           <p>AI 流式生成、历史上下文增强、多用户数据隔离与工作趋势复盘。</p>

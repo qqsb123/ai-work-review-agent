@@ -1,6 +1,7 @@
 # AI 智能工作复盘平台 · Portfolio Edition
 
-基于 Vue3 + TypeScript + Node.js/Express + MySQL + JWT + SSE + DeepSeek 的全栈 AI 工作流应用，支持用户鉴权、周报生成、历史上下文增强、AI 二次编辑、跨周趋势分析与数据持久化。
+一个面向实习/作品集展示的全栈 AI 应用。项目不只“调用大模型 API”，而是把 **用户系统、JWT 鉴权、MySQL 数据隔离、SSE 流式输出、历史上下文增强、AI 二次编辑、跨周趋势复盘、CRUD 与限流** 串成完整业务闭环。
+
 ## 技术栈
 
 - Frontend: Vue 3 + TypeScript + Vite + Element Plus + Marked
@@ -123,7 +124,7 @@ AI 输出可能不符合用户预期。系统先流式生成候选稿，在前�
 
 ## 推荐简历描述
 
-> **AI 智能周报工作台｜独立开发**  
+> **AI 智能工作复盘平台｜独立开发**  
 > Vue3 + TypeScript + Node.js/Express + MySQL + JWT + DeepSeek API
 >
 > - 设计 JWT 鉴权与用户数据隔离链路，使用 bcrypt 哈希密码，并以 `req.user.userId` 约束周报 CRUD 权限。
