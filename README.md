@@ -1,7 +1,6 @@
-# AI 智能周报工作台 · Portfolio Edition
+# AI 智能工作复盘平台 · Portfolio Edition
 
-一个面向实习/作品集展示的全栈 AI 应用。项目不只“调用大模型 API”，而是把 **用户系统、JWT 鉴权、MySQL 数据隔离、SSE 流式输出、历史上下文增强、AI 二次编辑、跨周趋势复盘、CRUD 与限流** 串成完整业务闭环。
-
+基于 Vue3 + TypeScript + Node.js/Express + MySQL + JWT + SSE + DeepSeek 的全栈 AI 工作流应用，支持用户鉴权、周报生成、历史上下文增强、AI 二次编辑、跨周趋势分析与数据持久化。
 ## 技术栈
 
 - Frontend: Vue 3 + TypeScript + Vite + Element Plus + Marked
