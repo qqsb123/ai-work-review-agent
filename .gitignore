@@ -3,5 +3,12 @@ dist/
 .env
 .DS_Store
 *.log
+*.tsbuildinfo
+.venv/
+__pycache__/
+.pytest_cache/
+.cache/
+.qdrant/
+*.pyc
 .vscode/
 .idea/

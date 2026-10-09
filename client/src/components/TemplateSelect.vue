@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   modelValue: 'concise' | 'detailed' | 'okr'
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -11,6 +12,7 @@ const emit = defineEmits<{
 <template>
   <el-radio-group
     :model-value="modelValue"
+    :disabled="disabled"
     @update:model-value="emit('update:modelValue', $event)"
   >
     <el-radio value="concise">简洁型</el-radio>

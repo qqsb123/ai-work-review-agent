@@ -1,0 +1,2224 @@
+{
+  "datasetVersion": "synthetic-v1",
+  "generatedAt": "2026-10-07T15:26:37.412017+00:00",
+  "embeddingModel": "intfloat/multilingual-e5-small",
+  "rerankerModel": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+  "qdrantMode": "remote-server",
+  "realUserDataWritten": false,
+  "retrieval": {
+    "keyword": {
+      "metrics": {
+        "Recall@1": 0.525,
+        "Recall@3": 0.725,
+        "Recall@5": 0.725,
+        "MRR": 0.8,
+        "nDCG@5": 0.6676061640322759
+      },
+      "cases": [
+        {
+          "caseId": "keyword",
+          "category": "关键词明确命中",
+          "rankedIds": [
+            4,
+            10,
+            9,
+            6,
+            5
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 4,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 5,
+            "vectorCount": 0,
+            "rrfCount": 5,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              4,
+              10,
+              9,
+              6,
+              5
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 4,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "synonym",
+          "category": "同义词",
+          "rankedIds": [
+            15,
+            4
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 0.5,
+            "Recall@5": 0.5,
+            "MRR": 1.0,
+            "nDCG@5": 0.3373519727104165
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 2,
+            "vectorCount": 0,
+            "rrfCount": 2,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              15,
+              4
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "semantic",
+          "category": "没有共同关键词的语义问题",
+          "rankedIds": [],
+          "metrics": {
+            "Recall@1": 0.0,
+            "Recall@3": 0.0,
+            "Recall@5": 0.0,
+            "MRR": 0,
+            "nDCG@5": 0.0
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 0,
+            "vectorCount": 0,
+            "rrfCount": 0,
+            "rerankCount": 0,
+            "selectedReportIds": [],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "trend",
+          "category": "跨周趋势",
+          "rankedIds": [
+            2
+          ],
+          "metrics": {
+            "Recall@1": 0.25,
+            "Recall@3": 0.25,
+            "Recall@5": 0.25,
+            "MRR": 1.0,
+            "nDCG@5": 0.21114065435315313
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 1,
+            "vectorCount": 0,
+            "rrfCount": 1,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              2
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "plan",
+          "category": "计划跟踪",
+          "rankedIds": [
+            12,
+            3
+          ],
+          "metrics": {
+            "Recall@1": 0.0,
+            "Recall@3": 0.5,
+            "Recall@5": 0.5,
+            "MRR": 0.5,
+            "nDCG@5": 0.4966392596877323
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 2,
+            "vectorCount": 0,
+            "rrfCount": 2,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              12,
+              3
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "unknown",
+          "category": "无法确认",
+          "rankedIds": [
+            12,
+            8,
+            6,
+            4,
+            1
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 5,
+            "vectorCount": 0,
+            "rrfCount": 5,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              12,
+              8,
+              6,
+              4,
+              1
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "distractors",
+          "category": "多个干扰记录",
+          "rankedIds": [
+            6
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 1,
+            "vectorCount": 0,
+            "rrfCount": 1,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              6
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "injection",
+          "category": "Prompt Injection",
+          "rankedIds": [
+            9,
+            10,
+            15,
+            3,
+            2
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 5,
+            "vectorCount": 0,
+            "rrfCount": 5,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              9,
+              10,
+              15,
+              3,
+              2
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "tenant",
+          "category": "跨用户隔离",
+          "rankedIds": [
+            2,
+            9
+          ],
+          "metrics": {
+            "Recall@1": null,
+            "Recall@3": null,
+            "Recall@5": null,
+            "MRR": null,
+            "nDCG@5": null,
+            "reason": "无正例，排名指标N/A；另报告隔离/过期候选检查"
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 2,
+            "vectorCount": 0,
+            "rrfCount": 2,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              2,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "stale",
+          "category": "修改和删除记录",
+          "rankedIds": [],
+          "metrics": {
+            "Recall@1": null,
+            "Recall@3": null,
+            "Recall@5": null,
+            "MRR": null,
+            "nDCG@5": null,
+            "reason": "无正例，排名指标N/A；另报告隔离/过期候选检查"
+          },
+          "latencyMs": 0,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 0,
+            "vectorCount": 0,
+            "rrfCount": 0,
+            "rerankCount": 0,
+            "selectedReportIds": [],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 0,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "cache",
+          "category": "语义问题",
+          "rankedIds": [
+            5
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 1,
+            "vectorCount": 0,
+            "rrfCount": 1,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              5
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "future",
+          "category": "未来计划不能证明完成",
+          "rankedIds": [
+            9,
+            8
+          ],
+          "metrics": {
+            "Recall@1": 0.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 0.5,
+            "nDCG@5": 0.6309297535714575
+          },
+          "latencyMs": 1,
+          "trace": {
+            "mode": "keyword",
+            "keywordCount": 2,
+            "vectorCount": 0,
+            "rrfCount": 2,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              9,
+              8
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 1,
+            "embeddingTokens": 0,
+            "rerankTokens": 0,
+            "remainingBudget": 80000,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        }
+      ],
+      "averageLatencyMs": 1.1666666666666667,
+      "p95LatencyMs": 4,
+      "fallbackCaseCount": 0
+    },
+    "dense": {
+      "metrics": {
+        "Recall@1": 0.7,
+        "Recall@3": 0.875,
+        "Recall@5": 0.95,
+        "MRR": 1.0,
+        "nDCG@5": 0.8823947211739306
+      },
+      "cases": [
+        {
+          "caseId": "keyword",
+          "category": "关键词明确命中",
+          "rankedIds": [
+            4,
+            9,
+            5,
+            10,
+            8
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 32,
+          "trace": {
+            "embeddingDurationMs": 21,
+            "vectorSearchDurationMs": 8,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              4,
+              9,
+              5,
+              10,
+              8
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 32,
+            "embeddingTokens": 10,
+            "rerankTokens": 0,
+            "remainingBudget": 79990,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "synonym",
+          "category": "同义词",
+          "rankedIds": [
+            15,
+            2,
+            10,
+            1,
+            9
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 0.5,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 0.6763610077981964
+          },
+          "latencyMs": 34,
+          "trace": {
+            "embeddingDurationMs": 25,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              15,
+              2,
+              10,
+              1,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 34,
+            "embeddingTokens": 10,
+            "rerankTokens": 0,
+            "remainingBudget": 79990,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "semantic",
+          "category": "没有共同关键词的语义问题",
+          "rankedIds": [
+            9,
+            10,
+            15,
+            2,
+            1
+          ],
+          "metrics": {
+            "Recall@1": 0.25,
+            "Recall@3": 0.75,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 0.6256107338747371
+          },
+          "latencyMs": 31,
+          "trace": {
+            "embeddingDurationMs": 23,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              9,
+              10,
+              15,
+              2,
+              1
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 31,
+            "embeddingTokens": 13,
+            "rerankTokens": 0,
+            "remainingBudget": 79987,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "trend",
+          "category": "跨周趋势",
+          "rankedIds": [
+            2,
+            9,
+            4,
+            8,
+            3
+          ],
+          "metrics": {
+            "Recall@1": 0.25,
+            "Recall@3": 0.5,
+            "Recall@5": 0.5,
+            "MRR": 1.0,
+            "nDCG@5": 0.5219754700663726
+          },
+          "latencyMs": 29,
+          "trace": {
+            "embeddingDurationMs": 21,
+            "vectorSearchDurationMs": 6,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              2,
+              9,
+              4,
+              8,
+              3
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 29,
+            "embeddingTokens": 17,
+            "rerankTokens": 0,
+            "remainingBudget": 79983,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "plan",
+          "category": "计划跟踪",
+          "rankedIds": [
+            3,
+            13,
+            12,
+            9,
+            5
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 32,
+          "trace": {
+            "embeddingDurationMs": 24,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              3,
+              13,
+              12,
+              9,
+              5
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 32,
+            "embeddingTokens": 14,
+            "rerankTokens": 0,
+            "remainingBudget": 79986,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "unknown",
+          "category": "无法确认",
+          "rankedIds": [
+            12,
+            8,
+            15,
+            4,
+            1
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 28,
+          "trace": {
+            "embeddingDurationMs": 20,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              12,
+              8,
+              15,
+              4,
+              1
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 28,
+            "embeddingTokens": 12,
+            "rerankTokens": 0,
+            "remainingBudget": 79988,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "distractors",
+          "category": "多个干扰记录",
+          "rankedIds": [
+            6,
+            1,
+            8,
+            12,
+            9
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 33,
+          "trace": {
+            "embeddingDurationMs": 22,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              6,
+              1,
+              8,
+              12,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 33,
+            "embeddingTokens": 14,
+            "rerankTokens": 0,
+            "remainingBudget": 79986,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "injection",
+          "category": "Prompt Injection",
+          "rankedIds": [
+            9,
+            10,
+            2,
+            3,
+            15
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 29,
+          "trace": {
+            "embeddingDurationMs": 21,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              9,
+              10,
+              2,
+              3,
+              15
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 29,
+            "embeddingTokens": 12,
+            "rerankTokens": 0,
+            "remainingBudget": 79988,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "tenant",
+          "category": "跨用户隔离",
+          "rankedIds": [
+            15,
+            9,
+            2,
+            1,
+            10
+          ],
+          "metrics": {
+            "Recall@1": null,
+            "Recall@3": null,
+            "Recall@5": null,
+            "MRR": null,
+            "nDCG@5": null,
+            "reason": "无正例，排名指标N/A；另报告隔离/过期候选检查"
+          },
+          "latencyMs": 32,
+          "trace": {
+            "embeddingDurationMs": 23,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              15,
+              9,
+              2,
+              1,
+              10
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 32,
+            "embeddingTokens": 12,
+            "rerankTokens": 0,
+            "remainingBudget": 79988,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "stale",
+          "category": "修改和删除记录",
+          "rankedIds": [
+            12,
+            2,
+            4,
+            10,
+            9
+          ],
+          "metrics": {
+            "Recall@1": null,
+            "Recall@3": null,
+            "Recall@5": null,
+            "MRR": null,
+            "nDCG@5": null,
+            "reason": "无正例，排名指标N/A；另报告隔离/过期候选检查"
+          },
+          "latencyMs": 29,
+          "trace": {
+            "embeddingDurationMs": 21,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              12,
+              2,
+              4,
+              10,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 29,
+            "embeddingTokens": 9,
+            "rerankTokens": 0,
+            "remainingBudget": 79991,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "cache",
+          "category": "语义问题",
+          "rankedIds": [
+            5,
+            9,
+            12,
+            10,
+            13
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 31,
+          "trace": {
+            "embeddingDurationMs": 21,
+            "vectorSearchDurationMs": 9,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              5,
+              9,
+              12,
+              10,
+              13
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 31,
+            "embeddingTokens": 16,
+            "rerankTokens": 0,
+            "remainingBudget": 79984,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "future",
+          "category": "未来计划不能证明完成",
+          "rankedIds": [
+            8,
+            2,
+            5,
+            4,
+            15
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 32,
+          "trace": {
+            "embeddingDurationMs": 24,
+            "vectorSearchDurationMs": 7,
+            "mode": "dense",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              8,
+              2,
+              5,
+              4,
+              15
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 32,
+            "embeddingTokens": 12,
+            "rerankTokens": 0,
+            "remainingBudget": 79988,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        }
+      ],
+      "averageLatencyMs": 31,
+      "p95LatencyMs": 34,
+      "fallbackCaseCount": 0
+    },
+    "rrf": {
+      "metrics": {
+        "Recall@1": 0.7,
+        "Recall@3": 0.875,
+        "Recall@5": 0.95,
+        "MRR": 1.0,
+        "nDCG@5": 0.8745281733892355
+      },
+      "cases": [
+        {
+          "caseId": "keyword",
+          "category": "关键词明确命中",
+          "rankedIds": [
+            4,
+            9,
+            10,
+            5,
+            6
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 30,
+          "trace": {
+            "embeddingDurationMs": 21,
+            "vectorSearchDurationMs": 7,
+            "mode": "rrf",
+            "keywordCount": 5,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              4,
+              9,
+              10,
+              5,
+              6
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 30,
+            "embeddingTokens": 10,
+            "rerankTokens": 0,
+            "remainingBudget": 79990,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "synonym",
+          "category": "同义词",
+          "rankedIds": [
+            15,
+            4,
+            2,
+            10,
+            1
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 0.5,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 0.641864940605065
+          },
+          "latencyMs": 31,
+          "trace": {
+            "embeddingDurationMs": 23,
+            "vectorSearchDurationMs": 6,
+            "mode": "rrf",
+            "keywordCount": 2,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              15,
+              4,
+              2,
+              10,
+              1
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 31,
+            "embeddingTokens": 10,
+            "rerankTokens": 0,
+            "remainingBudget": 79990,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "semantic",
+          "category": "没有共同关键词的语义问题",
+          "rankedIds": [
+            9,
+            10,
+            15,
+            2,
+            1
+          ],
+          "metrics": {
+            "Recall@1": 0.25,
+            "Recall@3": 0.75,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 0.6256107338747371
+          },
+          "latencyMs": 29,
+          "trace": {
+            "embeddingDurationMs": 21,
+            "vectorSearchDurationMs": 7,
+            "mode": "rrf",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              9,
+              10,
+              15,
+              2,
+              1
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 29,
+            "embeddingTokens": 13,
+            "rerankTokens": 0,
+            "remainingBudget": 79987,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "trend",
+          "category": "跨周趋势",
+          "rankedIds": [
+            2,
+            9,
+            4,
+            8,
+            3
+          ],
+          "metrics": {
+            "Recall@1": 0.25,
+            "Recall@3": 0.5,
+            "Recall@5": 0.5,
+            "MRR": 1.0,
+            "nDCG@5": 0.5219754700663726
+          },
+          "latencyMs": 34,
+          "trace": {
+            "embeddingDurationMs": 25,
+            "vectorSearchDurationMs": 7,
+            "mode": "rrf",
+            "keywordCount": 1,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              2,
+              9,
+              4,
+              8,
+              3
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 34,
+            "embeddingTokens": 17,
+            "rerankTokens": 0,
+            "remainingBudget": 79983,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "plan",
+          "category": "计划跟踪",
+          "rankedIds": [
+            3,
+            12,
+            13,
+            9,
+            5
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 0.95583058934618
+          },
+          "latencyMs": 34,
+          "trace": {
+            "embeddingDurationMs": 24,
+            "vectorSearchDurationMs": 8,
+            "mode": "rrf",
+            "keywordCount": 2,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              3,
+              12,
+              13,
+              9,
+              5
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 34,
+            "embeddingTokens": 14,
+            "rerankTokens": 0,
+            "remainingBudget": 79986,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "unknown",
+          "category": "无法确认",
+          "rankedIds": [
+            12,
+            8,
+            4,
+            6,
+            1
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 33,
+          "trace": {
+            "embeddingDurationMs": 23,
+            "vectorSearchDurationMs": 7,
+            "mode": "rrf",
+            "keywordCount": 5,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              12,
+              8,
+              4,
+              6,
+              1
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 33,
+            "embeddingTokens": 12,
+            "rerankTokens": 0,
+            "remainingBudget": 79988,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "distractors",
+          "category": "多个干扰记录",
+          "rankedIds": [
+            6,
+            1,
+            8,
+            12,
+            9
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 32,
+          "trace": {
+            "embeddingDurationMs": 22,
+            "vectorSearchDurationMs": 8,
+            "mode": "rrf",
+            "keywordCount": 1,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              6,
+              1,
+              8,
+              12,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 32,
+            "embeddingTokens": 14,
+            "rerankTokens": 0,
+            "remainingBudget": 79986,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "injection",
+          "category": "Prompt Injection",
+          "rankedIds": [
+            9,
+            10,
+            2,
+            15,
+            3
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 31,
+          "trace": {
+            "embeddingDurationMs": 21,
+            "vectorSearchDurationMs": 7,
+            "mode": "rrf",
+            "keywordCount": 5,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              9,
+              10,
+              2,
+              15,
+              3
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 31,
+            "embeddingTokens": 12,
+            "rerankTokens": 0,
+            "remainingBudget": 79988,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "tenant",
+          "category": "跨用户隔离",
+          "rankedIds": [
+            2,
+            9,
+            15,
+            1,
+            10
+          ],
+          "metrics": {
+            "Recall@1": null,
+            "Recall@3": null,
+            "Recall@5": null,
+            "MRR": null,
+            "nDCG@5": null,
+            "reason": "无正例，排名指标N/A；另报告隔离/过期候选检查"
+          },
+          "latencyMs": 36,
+          "trace": {
+            "embeddingDurationMs": 26,
+            "vectorSearchDurationMs": 7,
+            "mode": "rrf",
+            "keywordCount": 2,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              2,
+              9,
+              15,
+              1,
+              10
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 35,
+            "embeddingTokens": 12,
+            "rerankTokens": 0,
+            "remainingBudget": 79988,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "stale",
+          "category": "修改和删除记录",
+          "rankedIds": [
+            12,
+            2,
+            4,
+            10,
+            9
+          ],
+          "metrics": {
+            "Recall@1": null,
+            "Recall@3": null,
+            "Recall@5": null,
+            "MRR": null,
+            "nDCG@5": null,
+            "reason": "无正例，排名指标N/A；另报告隔离/过期候选检查"
+          },
+          "latencyMs": 39,
+          "trace": {
+            "embeddingDurationMs": 25,
+            "vectorSearchDurationMs": 10,
+            "mode": "rrf",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              12,
+              2,
+              4,
+              10,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 39,
+            "embeddingTokens": 9,
+            "rerankTokens": 0,
+            "remainingBudget": 79991,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "cache",
+          "category": "语义问题",
+          "rankedIds": [
+            5,
+            9,
+            12,
+            10,
+            13
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 47,
+          "trace": {
+            "embeddingDurationMs": 32,
+            "vectorSearchDurationMs": 10,
+            "mode": "rrf",
+            "keywordCount": 1,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              5,
+              9,
+              12,
+              10,
+              13
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 47,
+            "embeddingTokens": 16,
+            "rerankTokens": 0,
+            "remainingBudget": 79984,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "future",
+          "category": "未来计划不能证明完成",
+          "rankedIds": [
+            8,
+            9,
+            2,
+            5,
+            4
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 47,
+          "trace": {
+            "embeddingDurationMs": 36,
+            "vectorSearchDurationMs": 8,
+            "mode": "rrf",
+            "keywordCount": 2,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 0,
+            "selectedReportIds": [
+              8,
+              9,
+              2,
+              5,
+              4
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 47,
+            "embeddingTokens": 12,
+            "rerankTokens": 0,
+            "remainingBudget": 79988,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        }
+      ],
+      "averageLatencyMs": 35.25,
+      "p95LatencyMs": 47,
+      "fallbackCaseCount": 0
+    },
+    "rerank": {
+      "metrics": {
+        "Recall@1": 0.65,
+        "Recall@3": 0.825,
+        "Recall@5": 0.85,
+        "MRR": 0.9333333333333333,
+        "nDCG@5": 0.8004626293261994
+      },
+      "cases": [
+        {
+          "caseId": "keyword",
+          "category": "关键词明确命中",
+          "rankedIds": [
+            4,
+            5,
+            14,
+            6,
+            9
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 259,
+          "trace": {
+            "embeddingDurationMs": 26,
+            "vectorSearchDurationMs": 7,
+            "rerankDurationMs": 223,
+            "mode": "rerank",
+            "keywordCount": 5,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              4,
+              5,
+              14,
+              6,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 259,
+            "embeddingTokens": 10,
+            "rerankTokens": 342,
+            "remainingBudget": 79648,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "synonym",
+          "category": "同义词",
+          "rankedIds": [
+            2,
+            10,
+            15,
+            8,
+            4
+          ],
+          "metrics": {
+            "Recall@1": 0.0,
+            "Recall@3": 0.5,
+            "Recall@5": 0.5,
+            "MRR": 0.3333333333333333,
+            "nDCG@5": 0.16867598635520825
+          },
+          "latencyMs": 149,
+          "trace": {
+            "embeddingDurationMs": 24,
+            "vectorSearchDurationMs": 6,
+            "rerankDurationMs": 115,
+            "mode": "rerank",
+            "keywordCount": 2,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              2,
+              10,
+              15,
+              8,
+              4
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 149,
+            "embeddingTokens": 10,
+            "rerankTokens": 342,
+            "remainingBudget": 79648,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "semantic",
+          "category": "没有共同关键词的语义问题",
+          "rankedIds": [
+            9,
+            3,
+            1,
+            6,
+            13
+          ],
+          "metrics": {
+            "Recall@1": 0.25,
+            "Recall@3": 0.25,
+            "Recall@5": 0.25,
+            "MRR": 1.0,
+            "nDCG@5": 0.10179706617265982
+          },
+          "latencyMs": 145,
+          "trace": {
+            "embeddingDurationMs": 29,
+            "vectorSearchDurationMs": 7,
+            "rerankDurationMs": 105,
+            "mode": "rerank",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              9,
+              3,
+              1,
+              6,
+              13
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 145,
+            "embeddingTokens": 13,
+            "rerankTokens": 381,
+            "remainingBudget": 79606,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "trend",
+          "category": "跨周趋势",
+          "rankedIds": [
+            2,
+            9,
+            3,
+            10,
+            5
+          ],
+          "metrics": {
+            "Recall@1": 0.25,
+            "Recall@3": 0.5,
+            "Recall@5": 0.75,
+            "MRR": 1.0,
+            "nDCG@5": 0.7341532407341258
+          },
+          "latencyMs": 218,
+          "trace": {
+            "embeddingDurationMs": 34,
+            "vectorSearchDurationMs": 12,
+            "rerankDurationMs": 168,
+            "mode": "rerank",
+            "keywordCount": 1,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              2,
+              9,
+              3,
+              10,
+              5
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 217,
+            "embeddingTokens": 17,
+            "rerankTokens": 433,
+            "remainingBudget": 79550,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "plan",
+          "category": "计划跟踪",
+          "rankedIds": [
+            3,
+            13,
+            12,
+            10,
+            9
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 180,
+          "trace": {
+            "embeddingDurationMs": 31,
+            "vectorSearchDurationMs": 8,
+            "rerankDurationMs": 138,
+            "mode": "rerank",
+            "keywordCount": 2,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              3,
+              13,
+              12,
+              10,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 180,
+            "embeddingTokens": 14,
+            "rerankTokens": 394,
+            "remainingBudget": 79592,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "unknown",
+          "category": "无法确认",
+          "rankedIds": [
+            12,
+            8,
+            6,
+            15,
+            3
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 186,
+          "trace": {
+            "embeddingDurationMs": 28,
+            "vectorSearchDurationMs": 8,
+            "rerankDurationMs": 146,
+            "mode": "rerank",
+            "keywordCount": 5,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              12,
+              8,
+              6,
+              15,
+              3
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 186,
+            "embeddingTokens": 12,
+            "rerankTokens": 368,
+            "remainingBudget": 79620,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "distractors",
+          "category": "多个干扰记录",
+          "rankedIds": [
+            6,
+            12,
+            14,
+            1,
+            5
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 168,
+          "trace": {
+            "embeddingDurationMs": 28,
+            "vectorSearchDurationMs": 7,
+            "rerankDurationMs": 129,
+            "mode": "rerank",
+            "keywordCount": 1,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              6,
+              12,
+              14,
+              1,
+              5
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 168,
+            "embeddingTokens": 14,
+            "rerankTokens": 394,
+            "remainingBudget": 79592,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "injection",
+          "category": "Prompt Injection",
+          "rankedIds": [
+            9,
+            10,
+            2,
+            15,
+            4
+          ],
+          "metrics": {
+            "Recall@1": 0.5,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 169,
+          "trace": {
+            "embeddingDurationMs": 35,
+            "vectorSearchDurationMs": 9,
+            "rerankDurationMs": 121,
+            "mode": "rerank",
+            "keywordCount": 5,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              9,
+              10,
+              2,
+              15,
+              4
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 169,
+            "embeddingTokens": 12,
+            "rerankTokens": 368,
+            "remainingBudget": 79620,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "tenant",
+          "category": "跨用户隔离",
+          "rankedIds": [
+            2,
+            1,
+            8,
+            14,
+            15
+          ],
+          "metrics": {
+            "Recall@1": null,
+            "Recall@3": null,
+            "Recall@5": null,
+            "MRR": null,
+            "nDCG@5": null,
+            "reason": "无正例，排名指标N/A；另报告隔离/过期候选检查"
+          },
+          "latencyMs": 227,
+          "trace": {
+            "embeddingDurationMs": 36,
+            "vectorSearchDurationMs": 10,
+            "rerankDurationMs": 177,
+            "mode": "rerank",
+            "keywordCount": 2,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              2,
+              1,
+              8,
+              14,
+              15
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 227,
+            "embeddingTokens": 12,
+            "rerankTokens": 368,
+            "remainingBudget": 79620,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "stale",
+          "category": "修改和删除记录",
+          "rankedIds": [
+            1,
+            12,
+            8,
+            3,
+            14
+          ],
+          "metrics": {
+            "Recall@1": null,
+            "Recall@3": null,
+            "Recall@5": null,
+            "MRR": null,
+            "nDCG@5": null,
+            "reason": "无正例，排名指标N/A；另报告隔离/过期候选检查"
+          },
+          "latencyMs": 201,
+          "trace": {
+            "embeddingDurationMs": 33,
+            "vectorSearchDurationMs": 14,
+            "rerankDurationMs": 149,
+            "mode": "rerank",
+            "keywordCount": 0,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              1,
+              12,
+              8,
+              3,
+              14
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 201,
+            "embeddingTokens": 9,
+            "rerankTokens": 329,
+            "remainingBudget": 79662,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "cache",
+          "category": "语义问题",
+          "rankedIds": [
+            5,
+            6,
+            1,
+            12,
+            9
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 304,
+          "trace": {
+            "embeddingDurationMs": 118,
+            "vectorSearchDurationMs": 63,
+            "rerankDurationMs": 120,
+            "mode": "rerank",
+            "keywordCount": 1,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              5,
+              6,
+              1,
+              12,
+              9
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 304,
+            "embeddingTokens": 16,
+            "rerankTokens": 420,
+            "remainingBudget": 79564,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        },
+        {
+          "caseId": "future",
+          "category": "未来计划不能证明完成",
+          "rankedIds": [
+            8,
+            6,
+            1,
+            12,
+            2
+          ],
+          "metrics": {
+            "Recall@1": 1.0,
+            "Recall@3": 1.0,
+            "Recall@5": 1.0,
+            "MRR": 1.0,
+            "nDCG@5": 1.0
+          },
+          "latencyMs": 143,
+          "trace": {
+            "embeddingDurationMs": 22,
+            "vectorSearchDurationMs": 9,
+            "rerankDurationMs": 109,
+            "mode": "rerank",
+            "keywordCount": 2,
+            "vectorCount": 13,
+            "rrfCount": 13,
+            "rerankCount": 13,
+            "selectedReportIds": [
+              8,
+              6,
+              1,
+              12,
+              2
+            ],
+            "fallbackReasons": [],
+            "totalRetrievalDurationMs": 143,
+            "embeddingTokens": 12,
+            "rerankTokens": 368,
+            "remainingBudget": 79620,
+            "semanticWindow": 200,
+            "limitation": "仅候选，不是Evidence。read_report校验真实原文；在线每Run最多补索引12份，预索引覆盖另行记录。"
+          },
+          "isolationPassed": true
+        }
+      ],
+      "averageLatencyMs": 195.75,
+      "p95LatencyMs": 304,
+      "fallbackCaseCount": 0
+    }
+  },
+  "agent": {
+    "cases": [
+      {
+        "caseId": "insight",
+        "task": "insights",
+        "tools": [
+          "hybrid_search_reports",
+          "read_report",
+          "read_report",
+          "read_report",
+          "read_report"
+        ],
+        "toolSelectionCorrect": true,
+        "evidenceValid": true,
+        "taskSuccess": true,
+        "metrics": {
+          "steps": 4,
+          "toolCalls": 5,
+          "totalTokens": 8289,
+          "usageEstimated": false,
+          "repairs": 0,
+          "embeddingTokens": 12,
+          "rerankTokens": 368,
+          "durationMs": 6157
+        },
+        "latencyMs": 6157,
+        "failureCode": null
+      },
+      {
+        "caseId": "plan",
+        "task": "plans",
+        "tools": [
+          "get_recent_plans",
+          "find_plan_evidence",
+          "read_report",
+          "read_report",
+          "read_report",
+          "find_plan_evidence",
+          "read_report"
+        ],
+        "toolSelectionCorrect": true,
+        "evidenceValid": true,
+        "taskSuccess": true,
+        "metrics": {
+          "steps": 8,
+          "toolCalls": 7,
+          "totalTokens": 16358,
+          "usageEstimated": false,
+          "repairs": 2,
+          "embeddingTokens": 0,
+          "rerankTokens": 0,
+          "durationMs": 8257
+        },
+        "latencyMs": 8257,
+        "failureCode": null
+      },
+      {
+        "caseId": "unknown",
+        "task": "plans",
+        "tools": [
+          "get_recent_plans",
+          "find_plan_evidence",
+          "find_plan_evidence",
+          "read_report",
+          "read_report",
+          "read_report",
+          "hybrid_search_reports",
+          "read_report"
+        ],
+        "toolSelectionCorrect": true,
+        "evidenceValid": true,
+        "taskSuccess": true,
+        "metrics": {
+          "steps": 8,
+          "toolCalls": 8,
+          "totalTokens": 17136,
+          "usageEstimated": false,
+          "repairs": 2,
+          "embeddingTokens": 14,
+          "rerankTokens": 394,
+          "durationMs": 7605
+        },
+        "latencyMs": 7605,
+        "failureCode": null
+      },
+      {
+        "caseId": "sufficient",
+        "task": "clarification",
+        "tools": [],
+        "toolSelectionCorrect": true,
+        "evidenceValid": true,
+        "taskSuccess": true,
+        "metrics": {
+          "steps": 1,
+          "toolCalls": 0,
+          "totalTokens": 314,
+          "usageEstimated": false,
+          "repairs": 0,
+          "embeddingTokens": 0,
+          "rerankTokens": 0,
+          "durationMs": 764
+        },
+        "latencyMs": 764,
+        "failureCode": null
+      },
+      {
+        "caseId": "ambiguous",
+        "task": "clarification",
+        "tools": [],
+        "toolSelectionCorrect": true,
+        "evidenceValid": true,
+        "taskSuccess": true,
+        "metrics": {
+          "steps": 1,
+          "toolCalls": 0,
+          "totalTokens": 364,
+          "usageEstimated": false,
+          "repairs": 0,
+          "embeddingTokens": 0,
+          "rerankTokens": 0,
+          "durationMs": 864
+        },
+        "latencyMs": 864,
+        "failureCode": null
+      },
+      {
+        "caseId": "injection",
+        "task": "insights",
+        "tools": [
+          "hybrid_search_reports",
+          "search_reports",
+          "read_report",
+          "read_report",
+          "read_report",
+          "read_report"
+        ],
+        "toolSelectionCorrect": true,
+        "evidenceValid": true,
+        "taskSuccess": true,
+        "metrics": {
+          "steps": 4,
+          "toolCalls": 6,
+          "totalTokens": 9395,
+          "usageEstimated": false,
+          "repairs": 1,
+          "embeddingTokens": 12,
+          "rerankTokens": 368,
+          "durationMs": 5197
+        },
+        "latencyMs": 5197,
+        "failureCode": null
+      }
+    ],
+    "Tool Selection Accuracy": 1.0,
+    "Evidence Valid Rate": 1.0,
+    "Task Success Rate": 1.0,
+    "Unsupported Claim Rate": null,
+    "unsupportedClaimReason": "引用来源校验不等于自然语言蕴含。没有人工逐句标注，指标N/A，不伪造零幻觉。",
+    "Average Model Rounds": 4.333333333333333,
+    "Average Tool Calls": 4.333333333333333,
+    "Token Usage": 51856,
+    "Average Latency": 4807.333333333333,
+    "P95 Latency": 8257
+  },
+  "limitations": [
+    "固定小规模合成集，排名指标只平均有正例样本。没有正例的样本指标N/A，另做安全隔离检查。",
+    "首轮预热与预索引不计入检索延迟；Embedding/Cross-Encoder使用CPU；样本不足以代表线上P95或统计显著提升。",
+    "Agent TaskSuccess基于结构/计划状态/问题数量判据，EvidenceValid为来源检查，不是全部语义结论正确率。",
+    "跨用户查询仅证明不会返回其他用户记录；本用户可能有语义相关候选，不能要求无关问题必定零召回。"
+  ]
+}

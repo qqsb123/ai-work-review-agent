@@ -1,32 +1,7 @@
-# 本次升级内容
+# 最终升级记录
 
-这版以“简历含金量 + 面试可讲性 + 业务完整度”为目标，不追求无意义堆技术。
+最终主后端：Python/FastAPI；Node参考移入migration_reference/node。保留Vue3、MySQL、DeepSeek原生Tool Calling、唯一自研Runtime、Registry、Evidence、Human-in-the-loop、Trace、持久化Run/草稿、Checkpoint/Retry/Lease/CAS与幂等确认。
 
-## 新增
+检索升级为真实Qdrant Dense服务、关键词、RRF及sentence-transformers CrossEncoder。Evaluation真实比较四路，结果与局限不包装成虚构提升。完成后进入冻结，只修Bug、性能、测试与学习。
 
-- 历史上下文增强生成：最近 3 份周报参与 Prompt，但加入事实边界约束。
-- AI 二次编辑：专业化 / 精简 / OKR 化，SSE 流式输出，确认后再保存。
-- AI 工作趋势洞察：最近 6 份周报生成跨周复盘。
-- 统一前端 SSE 客户端：抽离 `streamPost`，复用流解析、401 与 AbortController 逻辑。
-- 统一后端 DeepSeek SSE 转发工具：减少重复流解析代码。
-- AI 用户级限流：单实例内存限流，保护 API 成本，并明确 Redis 扩展边界。
-- SQL schema + 索引脚本。
-- Node 内置测试：Prompt 事实约束回归测试。
-- GitHub Actions CI 配置。
-- 可选 Docker Compose：Nginx + Vue、Express、MySQL。
-- 完整 README 与学习清单。
-
-## 保留
-
-- 注册 / 登录
-- bcrypt + JWT
-- MySQL 用户数据隔离
-- 历史周报 CRUD
-- SSE 流式生成
-- AbortController 停止生成
-- Markdown / 复制 / PDF
-- Token 过期处理
-
-## 不伪装成 RAG
-
-当前“历史上下文增强”是 MySQL 最近记录检索 + Prompt 增强，不包含 embedding、向量数据库和向量召回，因此 README 明确不把它包装成向量 RAG。这样更经得住面试追问。
+事实基准：README、AGENT_PROJECT_LEARNING、AGENT_PROJECT_ARCHITECTURE、PYTHON_MIGRATION、AGENT_EVALUATION、AGENT_ACCEPTANCE。旧Node学习资料归档，不作为当前主实现说明。

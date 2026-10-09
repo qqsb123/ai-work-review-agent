@@ -1,0 +1,32 @@
+CREATE DATABASE IF NOT EXISTS ai_weekly_report
+  DEFAULT CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE ai_weekly_report;
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(64) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS reports (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  work_content TEXT NOT NULL,
+  problems TEXT,
+  next_plan TEXT,
+  style ENUM('concise', 'detailed', 'okr') NOT NULL DEFAULT 'detailed',
+  content MEDIUMTEXT NOT NULL,
+  request_key VARCHAR(36) NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_reports_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE,
+  INDEX idx_reports_user_created_at (user_id, created_at),
+  INDEX idx_reports_user_style (user_id, style),
+  UNIQUE INDEX idx_reports_user_request_key (user_id, request_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

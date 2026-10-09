@@ -7,7 +7,7 @@ services:
       MYSQL_DATABASE: ai_weekly_report
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./server/sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./backend/sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD:-change_me}"]
       interval: 10s
@@ -15,7 +15,7 @@ services:
       retries: 10
 
   server:
-    build: ./server
+    build: ./backend
     restart: unless-stopped
     environment:
       PORT: 3001
@@ -26,9 +26,22 @@ services:
       DB_USER: root
       DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change_me}
       DB_NAME: ai_weekly_report
+      QDRANT_URL: http://qdrant:6333
+      LOCAL_EMBEDDING_MODEL: intfloat/multilingual-e5-small
+      RERANKER_MODEL: cross-encoder/mmarco-mMiniLMv2-L12-H384-v1
+    volumes:
+      - model_cache:/app/.cache
     depends_on:
       mysql:
         condition: service_healthy
+      qdrant:
+        condition: service_started
+
+  qdrant:
+    image: qdrant/qdrant:v1.18.3
+    restart: unless-stopped
+    volumes:
+      - qdrant_data:/qdrant/storage
 
   client:
     build:
@@ -42,3 +55,5 @@ services:
 
 volumes:
   mysql_data:
+  qdrant_data:
+  model_cache:

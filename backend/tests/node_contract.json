@@ -1,0 +1,64 @@
+{
+  "source": "Frozen Node reference before FastAPI cutover",
+  "prepareKeys": [
+    "expiresAt",
+    "metrics",
+    "questions",
+    "runId",
+    "sessionId"
+  ],
+  "generateKeys": [
+    "content",
+    "factCheckFallback",
+    "requiresConfirmation",
+    "sessionId"
+  ],
+  "confirmKeys": [
+    "alreadySaved",
+    "code",
+    "reportId"
+  ],
+  "insightKeys": [
+    "limitations",
+    "metrics",
+    "runId",
+    "sections",
+    "sources"
+  ],
+  "sections": [
+    {
+      "key": "workstreams",
+      "title": "近期工作主线"
+    },
+    {
+      "key": "continuity",
+      "title": "连续性与推进情况"
+    },
+    {
+      "key": "recurringProblems",
+      "title": "可能的反复问题"
+    },
+    {
+      "key": "suggestions",
+      "title": "下一步建议"
+    }
+  ],
+  "sourceKeys": [
+    "content",
+    "createdAt",
+    "id",
+    "nextPlan",
+    "truncated",
+    "updatedAt",
+    "workContent"
+  ],
+  "protocol": [
+    "content",
+    "progress",
+    "trace",
+    "result",
+    "[DONE]"
+  ],
+  "generatedContent": "登录模块开发完成并通过自测。",
+  "successfulDone": true
+}

@@ -1,19 +1,51 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { marked } from 'marked'
+import { safeMarkdown } from './utils/safeMarkdown'
 import ReportForm from './components/ReportForm.vue'
 import ReportResult from './components/ReportResult.vue'
 import LoginForm from './components/LoginForm.vue'
+import InsightsResultView from './components/InsightsResult.vue'
+import PlanTracker from './components/PlanTracker.vue'
+import AgentTrace from './components/AgentTrace.vue'
+import BrandLogo from './components/BrandLogo.vue'
+import { getAgentData } from './api/agentRuns'
+import { confirmWeeklyReport, type GeneratedDraft, type PreparedDraft, type WeeklyReportPayload } from './api/weeklyReport'
 import { deleteReport, getReports, updateReport, type Report } from './api/reports'
-import { generateInsights, rewriteReport, type RewriteMode } from './api/ai'
+import { generateInsights, rewriteReport, type RewriteMode, type InsightsResult, type PlanResult } from './api/ai'
+
+const pages = [
+  { id: 'weekly', title: '周报生成', description: '整理本周工作，检查并确认你的周报。' },
+  { id: 'insights', title: '工作趋势', description: '结合历史原文，回顾工作主线与反复出现的问题。' },
+  { id: 'plans', title: '计划跟踪', description: '核对后续记录，查看历史计划的推进情况。' },
+  { id: 'history', title: '历史周报', description: '查看、编辑和管理已确认保存的周报。' },
+  { id: 'runs', title: '执行记录', description: '查看任务过程，恢复结果或重新执行中断的任务。' },
+] as const
+type PageId = typeof pages[number]['id']
+function pageFromHash(): PageId {
+  const id = window.location.hash.slice(1)
+  return pages.find(page => page.id === id)?.id || 'weekly'
+}
+const activePage = ref<PageId>(pageFromHash())
+function syncPage() { activePage.value = pageFromHash() }
+function navigate(page: PageId) {
+  activePage.value = page
+  window.location.hash = page
+}
 
 const result = ref('')
+const formRef = ref<InstanceType<typeof ReportForm> | null>(null)
+const restoredPlans = ref<PlanResult | null>(null)
+const reportDraft = ref<GeneratedDraft | null>(null)
+const draftSaving = ref(false)
+const draftSaved = ref(false)
+const draftSaveError = ref('')
 const loading = ref(false)
 const controller = ref<AbortController | null>(null)
 const isLoggedIn = ref(!!localStorage.getItem('token'))
 const reports = ref<Report[]>([])
 const historyLoading = ref(false)
+let historyRequest = 0
 const detailVisible = ref(false)
 const editing = ref(false)
 const selectedReport = ref<Report | null>(null)
@@ -21,7 +53,10 @@ const editContent = ref('')
 
 const rewriteLoading = ref(false)
 const rewriteController = ref<AbortController | null>(null)
-const insights = ref('')
+const insights = ref<InsightsResult | null>(null)
+const insightsQuestion = ref('')
+const insightsProgress = ref('')
+const insightsError = ref('')
 const insightsLoading = ref(false)
 const insightsController = ref<AbortController | null>(null)
 
@@ -39,8 +74,18 @@ function clearSessionState() {
   isLoggedIn.value = false
   reports.value = []
   result.value = ''
-  insights.value = ''
+  reportDraft.value = null
+  draftSaved.value = false
+  draftSaveError.value = ''
+  insights.value = null
+  restoredPlans.value = null
+  insightsQuestion.value = ''
+  insightsProgress.value = ''
+  insightsError.value = ''
   detailVisible.value = false
+  selectedReport.value = null
+  editContent.value = ''
+  historyRequest++
 }
 
 function logout(message = '已退出登录') {
@@ -57,12 +102,15 @@ function handleAuthExpired() {
 async function loadReports() {
   if (!isLoggedIn.value) return
   historyLoading.value = true
+  const currentRequest = ++historyRequest
+  const currentToken = localStorage.getItem('token')
   try {
-    reports.value = await getReports()
+    const loaded = await getReports()
+    if (isLoggedIn.value && currentRequest === historyRequest && localStorage.getItem('token') === currentToken) reports.value = loaded
   } catch (error) {
     console.error('加载历史周报失败:', error)
   } finally {
-    historyLoading.value = false
+    if (currentRequest === historyRequest) historyLoading.value = false
   }
 }
 
@@ -130,19 +178,31 @@ async function runInsights() {
   const currentController = new AbortController()
   insightsController.value = currentController
   insightsLoading.value = true
-  insights.value = ''
+  insights.value = null
+  insightsProgress.value = '正在开始复盘...'
+  insightsError.value = ''
 
-  let content = ''
+  let pendingResult: InsightsResult | null = null
   await generateInsights(
-    (chunk) => {
-      content += chunk
-      insights.value = content
+    insightsQuestion.value.trim(),
+    (result) => {
+      if (!currentController.signal.aborted) pendingResult = result
+    },
+    (event) => {
+      if (!currentController.signal.aborted) insightsProgress.value = event.message
     },
     () => {
+      if (insightsController.value !== currentController) return
+      if (!currentController.signal.aborted && !insightsError.value) insights.value = pendingResult
+      insightsProgress.value = currentController.signal.aborted ? '已停止分析' : ''
       insightsLoading.value = false
       insightsController.value = null
     },
-    (message) => ElMessage.error(message),
+    (message) => {
+      if (currentController.signal.aborted) return
+      insightsError.value = message
+      ElMessage.error(message)
+    },
     currentController.signal
   )
 }
@@ -162,7 +222,7 @@ async function removeReport(report: Report) {
     if (selectedReport.value?.id === report.id) detailVisible.value = false
     await loadReports()
     ElMessage.success('删除成功')
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (error === 'cancel' || error === 'close') return
     ElMessage.error(error instanceof Error ? error.message : '删除失败')
   }
@@ -178,16 +238,18 @@ function styleName(style: Report['style']) {
 }
 
 function renderMarkdown(content: string) {
-  return marked.parse(content || '') as string
+  return safeMarkdown(content)
 }
 
 onMounted(() => {
   window.addEventListener('auth-expired', handleAuthExpired)
+  window.addEventListener('hashchange', syncPage)
   if (isLoggedIn.value) loadReports()
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('auth-expired', handleAuthExpired)
+  window.removeEventListener('hashchange', syncPage)
   controller.value?.abort()
   rewriteController.value?.abort()
   insightsController.value?.abort()
@@ -195,12 +257,50 @@ onBeforeUnmount(() => {
 
 function handleStart() {
   loading.value = true
+  reportDraft.value = null
+  draftSaved.value = false
+  draftSaveError.value = ''
 }
 
 async function handleDone() {
   loading.value = false
   controller.value = null
-  await loadReports()
+}
+
+function handleDraft(draft: GeneratedDraft) { reportDraft.value = draft }
+
+async function recoverAgentResult(task: string, saved: Record<string, unknown>) {
+  if (loading.value || insightsLoading.value || draftSaving.value) { ElMessage.info('请先完成或停止当前任务'); return }
+  if (task === 'insights') { insights.value = saved as unknown as InsightsResult; insightsError.value = ''; navigate('insights'); return }
+  if (task === 'plans') { restoredPlans.value = saved as unknown as PlanResult; navigate('plans'); return }
+  if (task === 'clarification' && typeof saved.sessionId === 'string') {
+    const token = localStorage.getItem('token')
+    try {
+      const draft = await getAgentData<PreparedDraft & GeneratedDraft & { input: WeeklyReportPayload; state: string }>(`/api/weekly-report/drafts/${encodeURIComponent(saved.sessionId)}`)
+      if (!isLoggedIn.value || token !== localStorage.getItem('token')) return
+      if (draft.state === 'ready' || draft.state === 'saved') {
+        result.value = draft.content; reportDraft.value = draft; draftSaved.value = draft.state === 'saved'; draftSaveError.value = ''
+      } else if (draft.state === 'prepared') formRef.value?.restore(draft)
+      else ElMessage.info('草稿仍在生成，异常中断后请等待四分钟再恢复')
+      if (['ready', 'saved', 'prepared'].includes(draft.state)) navigate('weekly')
+    } catch (error) { ElMessage.error(error instanceof Error ? error.message : '恢复失败') }
+  }
+}
+
+async function saveDraft() {
+  if (!reportDraft.value || draftSaving.value || draftSaved.value) return
+  const currentDraft = reportDraft.value
+  draftSaving.value = true
+  draftSaveError.value = ''
+  try {
+    await confirmWeeklyReport(currentDraft)
+    if (reportDraft.value === currentDraft && isLoggedIn.value) {
+      draftSaved.value = true
+      await loadReports()
+      ElMessage.success('周报已确认保存')
+    }
+  } catch (error: unknown) { draftSaveError.value = error instanceof Error ? error.message : '保存失败，请重试' }
+  finally { draftSaving.value = false }
 }
 
 function handleController(value: AbortController | null) {
@@ -215,15 +315,12 @@ function stopGenerate() {
 </script>
 
 <template>
-  <main class="page">
+  <main class="page" :class="{ 'login-page': !isLoggedIn }">
     <div class="container">
-      <header class="hero hero-row">
+      <header v-if="isLoggedIn" class="hero hero-row">
         <div>
-          <div class="title-badges">
-            <h1>AI 智能工作复盘平台</h1>
-            <el-tag type="success" effect="dark">Portfolio Edition</el-tag>
-          </div>
-          <p>AI 流式生成、历史上下文增强、多用户数据隔离与工作趋势复盘。</p>
+          <h1 class="workspace-brand-heading"><BrandLogo /></h1>
+          <p class="workspace-tagline">记录工作，回看进展。</p>
         </div>
         <el-button v-if="isLoggedIn" @click="logout()">退出登录</el-button>
       </header>
@@ -231,22 +328,47 @@ function stopGenerate() {
       <LoginForm v-if="!isLoggedIn" @success="handleLoginSuccess" />
 
       <div v-else>
-        <div class="grid">
+        <nav class="workspace-nav" aria-label="功能导航">
+          <a v-for="page in pages" :key="page.id" :href="`#${page.id}`"
+            :class="{ active: activePage === page.id }" :aria-current="activePage === page.id ? 'page' : undefined">
+            {{ page.title }}
+            <span v-if="page.id === 'weekly' && loading" class="nav-running">生成中</span>
+            <span v-if="page.id === 'insights' && insightsLoading" class="nav-running">分析中</span>
+          </a>
+        </nav>
+        <div class="workspace-heading">
+          <h2>{{ pages.find(page => page.id === activePage)?.title }}</h2>
+          <p>{{ pages.find(page => page.id === activePage)?.description }}</p>
+        </div>
+
+        <div v-show="activePage === 'weekly'" class="grid workspace-panel">
           <ReportForm
+            ref="formRef"
             v-model="result"
-            :loading="loading"
+            :loading="loading || draftSaving"
             @start="handleStart"
             @done="handleDone"
             @controller="handleController"
+            @draft="handleDraft"
           />
-          <ReportResult :content="result" :loading="loading" @stop="stopGenerate" />
+          <div>
+            <ReportResult :content="result" :loading="loading" :ready="!!reportDraft" @stop="stopGenerate" />
+            <div v-if="reportDraft" class="card draft-confirmation">
+              <el-alert v-if="reportDraft.factCheckFallback" title="模型草稿未通过事实校验，已改为保留原始信息的保守整理稿。" type="info" :closable="false" />
+              <p>{{ draftSaved ? '这份周报已保存到历史记录。' : '这是待确认草稿，尚未写入历史。检查后点击确认保存。' }}</p>
+              <el-alert v-if="draftSaveError" :title="draftSaveError" type="error" :closable="false" />
+              <el-button type="primary" :loading="draftSaving" :disabled="draftSaved || loading" @click="saveDraft">
+                {{ draftSaved ? '已保存' : '确认保存到历史' }}
+              </el-button>
+            </div>
+          </div>
         </div>
 
-        <section class="card insight-card">
+        <section v-show="activePage === 'insights'" class="card insight-card workspace-panel">
           <div class="history-title-row">
             <div>
-              <h2 class="card-title">AI 工作趋势洞察</h2>
-              <p class="section-desc">基于最近 6 份历史周报分析工作主线、计划承接和反复问题。</p>
+              <h2 class="card-title">Agent 工作趋势复盘</h2>
+              <p class="section-desc">查找相关历史记录、核对原文，分析工作主线、计划承接和反复问题。</p>
             </div>
             <div class="inline-actions">
               <el-button v-if="insightsLoading" type="danger" plain @click="stopInsights">停止分析</el-button>
@@ -256,11 +378,25 @@ function stopGenerate() {
             </div>
           </div>
 
-          <el-empty v-if="!insights && !insightsLoading" description="至少积累 2 份周报后，可生成跨周趋势复盘" />
-          <div v-else class="markdown-content" v-html="renderMarkdown(insights)" />
+          <div class="form-item agent-focus">
+            <label>复盘重点（可选）</label>
+            <el-input v-model="insightsQuestion" :disabled="insightsLoading" maxlength="1000"
+              placeholder="例如：权限模块推进情况，以及反复出现的阻塞" />
+          </div>
+          <p v-if="insightsProgress" role="status" aria-live="polite" class="agent-progress">{{ insightsProgress }}</p>
+          <el-alert v-if="insightsError" :title="insightsError" type="error" :closable="false" />
+          <el-empty v-if="!insights && !insightsLoading && !insightsError" description="至少积累 2 份周报后，可生成带原文依据的趋势复盘" />
+          <InsightsResultView v-if="insights" :result="insights" />
         </section>
 
-        <section class="history card">
+        <div v-show="activePage === 'plans'" class="workspace-panel">
+          <PlanTracker :reports="reports" :restored="restoredPlans" />
+        </div>
+        <div v-show="activePage === 'runs'" class="workspace-panel">
+          <AgentTrace @recover="recoverAgentResult" />
+        </div>
+
+        <section v-show="activePage === 'history'" class="history card workspace-panel">
           <div class="history-title-row">
             <div>
               <h2 class="card-title">历史周报</h2>

@@ -1,156 +1,167 @@
-# AI 智能工作复盘平台 · Portfolio Edition
+# AI Agent 智能工作复盘平台 — Python 最终版
 
-一个面向实习/作品集展示的全栈 AI 应用。项目不只“调用大模型 API”，而是把 **用户系统、JWT 鉴权、MySQL 数据隔离、SSE 流式输出、历史上下文增强、AI 二次编辑、跨周趋势复盘、CRUD 与限流** 串成完整业务闭环。
+**当前唯一主后端是 Python + FastAPI。** Vue3 + TypeScript 前端保持原有接口。原Node/Express保存在migration_reference/node，只用于迁移对照，不进入启动、Docker或CI后端路径。
+
+本次完成后功能与技术框架冻结：后续只修Bug、性能优化、测试完善和学习。
+
+## 已实现
+
+- 前端按周报生成、工作趋势、计划跟踪、历史周报、执行记录分区导航（URL hash可直接打开、前进/后退）；页面切换保留输入与任务状态，恢复结果自动跳转到对应分区。
+- 注册/登录、兼容既有bcrypt哈希、HS256 JWT、用户隔离的历史周报CRUD。
+- 0到3个智能追问，同一session补充/跳过，完整流生成、事实检查和保守回退。
+- 七天持久化草稿；生成不写正式reports，用户明确确认才幂等保存。
+- 专业化/精简/OKR重写，预览后手动保存；复制/PDF及Markdown净化保留。
+- 唯一自研Agent Runtime，DeepSeek Tool Calling、Registry白名单与严格参数校验。
+- 趋势复盘、计划跟踪、原文Evidence校验；无充分证据返回空项/待确认。
+- 真正Hybrid RAG：MySQL关键词 + 真实Embedding + Qdrant Dense服务 + RRF + sentence-transformers CrossEncoder + Top-K候选。
+- 候选不是Evidence，必须read_report；Qdrant过滤userId/modelVersion，SQL再复核所有权、删除和正文hash。
+- 安全Trace、持久化Run/Checkpoint、CAS Lease、最多三次安全重跑、成功请求重放。
+- 模型/检索预算、Timeout、Cancel、并发限制、SSE progress/trace/result/DONE。
+- 四路真实检索Evaluation、六例真实DeepSeek评估、JSON/Markdown报告、Node golden契约对照与安全/集成测试。
+
+## 目录
+
+```text
+client/                         Vue3 / TypeScript，Node仅用于前端开发构建
+backend/
+  app/
+    main.py                     FastAPI APIRouter / JWT Dependency / 业务入口
+    models.py config.py         严格请求类型与服务端配置
+    db.py stores.py             Async MySQL / Run / Draft / 确认事务
+    runtime.py tools.py         唯一Runtime / Registry / 数据工具
+    tasks.py prompts.py         三个任务配置
+    evidence.py weekly.py       引用/状态/追问/草稿事实校验
+    provider.py lifecycle.py    DeepSeek / StreamingResponse / Trace / Cancel
+    retrieval.py http_guard.py  Qdrant / Embedding / RRF / CrossEncoder / 请求边界
+  sql/                          原业务DDL与附加工程表
+  scripts/                      迁移、预热、索引、真实验收、合成预览
+  tests/                        单元、安全、契约、可靠性与Node对照
+  eval/                         固定合成数据、指标、单命令评估、结果文件
+migration_reference/node/       冻结的Node参考代码，非运行路径
+AGENT_PROJECT_LEARNING.md        最终Python学习顺序与关键文件
+AGENT_PROJECT_ARCHITECTURE.md    架构图、完整数据流、数据与权限边界
+AGENT_EVALUATION.md              真实结果、指标定义与局限
+PYTHON_MIGRATION.md              迁移对照、切换和回退
+AGENT_PROJECT_INTERVIEW.md       30道真实代码面试题
+AGENT_ACCEPTANCE.md              最终验收记录
+```
+
+## 架构与数据流
+
+```mermaid
+flowchart TD
+    V[Vue3 TypeScript] --> F[FastAPI JWT MySQL SSE]
+    F --> R[唯一自研Agent Runtime]
+    R --> D[DeepSeek Tool Calling]
+    D --> T[Tool Registry 白名单]
+    T --> K[关键词]
+    T --> Q[Embedding / Qdrant userId过滤]
+    K --> M[RRF融合]
+    Q --> C[MySQL当前正文hash复核]
+    C --> M
+    M --> X[CrossEncoder重排]
+    X --> P[Top-K候选 Tool Data]
+    P --> R
+    T --> O[read_report当前原文]
+    O --> E[Evidence Grounding]
+    E --> H[Human-in-the-loop]
+    H --> W[唯一键 / 事务正式写入]
+    R --> S[Trace / Run / Checkpoint / Budget / Timeout / Cancel]
+    S --> V
+    A[合成Evaluation] --> Q
+    A --> X
+```
+
+requestKey→JWT绑定用户→输入校验与并发→MySQL Run CAS→Runtime→模型自主选Tool→混合候选→read_report→sources白名单→Evidence Validation→持久化结果→SSE result+[DONE]。追问得到sessionId，完整草稿存ready，confirm=true与正文一致才写正式reports。
+
+不保存或展示reasoning_content、原始query/正文到Trace。Checkpoint只记录安全边界与用量，恢复从保存输入重跑，重新读取当前原文；不是模型消息逐条续跑。
 
 ## 技术栈
 
-- Frontend: Vue 3 + TypeScript + Vite + Element Plus + Marked
-- Backend: Node.js + Express
-- Database: MySQL 8 + mysql2/promise
-- Auth: bcryptjs + JWT
-- AI: DeepSeek Chat API
-- Streaming: SSE + ReadableStream + TextDecoder + AbortController
+Python 3.13、FastAPI、Pydantic、asyncio、httpx、SQLAlchemy Async + aiomysql、PyJWT、bcrypt；MySQL 8；Qdrant服务；sentence-transformers SentenceTransformer/CrossEncoder；DeepSeek原生Tool Calling。没有LangChain、LangGraph、Multi-Agent、MCP、Redis、Kafka、微服务或复杂工作流引擎。
 
-## 核心功能
+本机实际依赖快照在backend/requirements.lock.txt；常规安装使用requirements.txt，CI无模型测试使用requirements-core.txt。MySQL保留原users/reports与确认唯一键；旧report_embeddings表可保留旧数据，但新Dense路径不读取MySQL JSON向量。
 
-1. 注册 / 登录：bcrypt 哈希密码，JWT 登录凭证。
-2. 多用户数据隔离：所有周报读写都使用 `req.user.userId` 作为数据边界。
-3. AI 流式周报：后端代理 DeepSeek 流，前端实时消费 SSE，不等待完整结果。
-4. 停止生成：前端 AbortController 与后端上游 AbortSignal 联动。
-5. MySQL 持久化：AI 生成完成后自动保存周报。
-6. 历史周报 CRUD：查看、编辑、删除，且全部校验当前用户所有权。
-7. 历史上下文增强：生成新周报时可参考最近 3 份历史周报，识别工作连续性，但严格禁止把旧成果写成本周新成果。
-8. AI 二次编辑：对历史周报进行“专业化 / 精简 / OKR 化”流式重写，用户确认后再保存数据库。
-9. AI 趋势洞察：基于最近 6 份周报分析工作主线、计划承接、反复问题和下周建议。
-10. AI 成本保护：按登录用户做轻量限流，避免短时间重复调用模型接口。
-11. Token 过期处理：401 时统一清理本地会话并回到登录状态。
-12. Markdown 展示、复制、PDF 导出。
+## 本地启动
 
-## 架构链路
+配置在backend/.env，参考.env.example。当前迁移已保留原数据库/JWT/DeepSeek配置，不把真实文件入Git。核心变量：DB_HOST/PORT/USER/PASSWORD/NAME、JWT_SECRET、DEEPSEEK_API_KEY、DEEPSEEK_AGENT_MODEL/REPORT_MODEL、QDRANT_URL/API_KEY、LOCAL_EMBEDDING_MODEL/REVISION、RERANKER_MODEL。可设置已校验本地模型目录LOCAL_EMBEDDING_PATH/LOCAL_RERANKER_PATH，路径相对backend解析。
 
-```text
-Browser / Vue3
-   │
-   ├─ register / login ──────────────► Express ─► bcrypt / JWT ─► MySQL users
-   │
-   ├─ Authorization: Bearer <JWT>
-   │            │
-   │            ▼
-   │      authMiddleware
-   │            │
-   │      req.user.userId
-   │            │
-   ├────────────┼────────────────────► MySQL reports (user isolation)
-   │            │
-   │            └─ AI endpoints ─────► DeepSeek API
-   │                                      │
-   │                                      ▼
-   ◄──────── SSE / ReadableStream ◄──── stream chunks
+新环境在根目录：
+
+```powershell
+python -m venv backend/.venv
+backend/.venv/Scripts/python.exe -m pip install -r backend/requirements.txt
+# 仅当.env不存在时复制示例，再填写你自己的配置
+cd backend
+.venv/Scripts/python.exe -m scripts.migrate
 ```
 
-## 本地运行
+新库先执行backend/sql/schema.sql，已有库只做附加迁移，不删表、不清空数据。迁移校验原确认键、Run唯一键和JSON字段；不兼容时停止。
 
-### 1. MySQL
+先启动真实Qdrant。Windows本机已校验二进制存.cache/qdrant/bin，另一个终端执行：
 
-执行：
-
-```sql
-SOURCE server/sql/schema.sql;
+```powershell
+cd backend
+./start_qdrant.ps1
 ```
 
-如果你已经有表，不需要重建；可单独参考 `server/sql/performance.sql` 添加索引。
+也可使用官方Docker Qdrant或已有远程服务，配置QDRANT_URL；本机配置仅监听127.0.0.1，关闭Telemetry。模型首次下载需可访问模型仓库，先预热确认能加载和预测：
 
-### 2. 后端
-
-```bash
-cd server
-npm install
+```powershell
+cd backend
+$env:PYTHONUTF8='1'
+.venv/Scripts/python.exe -m scripts.warm_models
+./start.ps1
 ```
 
-复制 `.env.example` 为 `.env`，填写自己的配置。不要把真实 `.env` 上传到 GitHub。
+第三个终端：
 
-```bash
-npm run dev
-```
-
-默认：`http://localhost:3001`
-
-### 3. 前端
-
-```bash
+```powershell
 cd client
-npm install
-npm run dev
+npm ci
+npm run dev -- --host 127.0.0.1
 ```
 
-默认：`http://localhost:5173`
+打开 http://127.0.0.1:5173，/api代理到FastAPI 3001，健康检查返回backend=fastapi。后端重启保留MySQL草稿与Run；异常running四分钟租约到期可显式重跑。
 
-Vite 将 `/api` 代理到 `http://localhost:3001`。
+已有本机模型权重已真实加载与预测，缓存不进Git。Embedding为intfloat/multilingual-e5-small、384维，固定revision；CrossEncoder为cross-encoder/mmarco-mMiniLMv2-L12-H384-v1。新部署若网络受限需自行准备相同已校验模型目录，不能把下载失败说成Reranker已启用。
 
-## 重点接口
+生产配置可参考docker-compose.yml：Python后端、MySQL、Qdrant、Nginx静态Vue。Docker文件已切换，但本机没有Docker，未声称完成Docker镜像/线上部署验收。
 
-```text
-POST   /api/auth/register
-POST   /api/auth/login
-POST   /api/weekly-report
-GET    /api/reports
-GET    /api/reports/:id
-PUT    /api/reports/:id
-DELETE /api/reports/:id
-POST   /api/ai/rewrite/:id
-POST   /api/ai/insights
-GET    /api/health
+## 测试与评估
+
+```powershell
+cd backend
+.venv/Scripts/python.exe -m pytest -q
+.venv/Scripts/python.exe -m scripts.verify_mysql
+.venv/Scripts/python.exe -m scripts.verify_parallel
+.venv/Scripts/python.exe -m scripts.verify_live
+.venv/Scripts/python.exe -m eval.run --live-agent
+cd ../client
+npm test
+npm run typecheck
+npm run build
 ```
 
-## 面试最值得讲的 6 个点
+verify_mysql只用MySQL临时表；verify_live真实调用DeepSeek/Qdrant/Embedding/CrossEncoder，Evaluation用独立合成集合，均不污染真实用户。真实DeepSeek调用产生少量费用。无密钥CI只跑Python与Client测试/构建，不自动调用收费模型。
 
-### 1. 为什么不用一次性返回 AI 文本？
-大模型天然逐 token/片段生成。通过 SSE 把上游流直接转发给浏览器，可以降低首字等待时间。前端用 `ReadableStream.getReader()` 消费 chunk，用 `TextDecoder` 解码，再通过 buffer 解决“网络 chunk 边界不等于 SSE event 边界”的问题。
+预索引当前用户最近200份：`.venv/Scripts/python.exe -m scripts.index_reports --user 你的用户ID`，只写Qdrant基础设施数据，不改正式周报。合成界面预览：`.venv/Scripts/python.exe -m scripts.preview`，4175端口、engineering-demo/demo-password，只访问临时合成数据。
 
-### 2. 为什么需要 buffer？
-TCP/HTTP 流不会保证一次 `read()` 恰好得到一条完整 SSE 消息。一次 chunk 可能只包含半条 JSON，也可能包含多条事件，因此先累积到 buffer，再按 `\n\n` 提取完整事件。
+## 已验收与真实结果
 
-### 3. 用户数据怎么隔离？
-JWT 解出 `userId` 后写到 `req.user`，所有 `SELECT / UPDATE / DELETE` 都同时带 `id` 与 `user_id` 条件。前端传来的 userId 不被信任，因此无法通过改请求参数读取其他用户的数据。
+Python 41项测试、Client 7项协议测试、TypeScript/生产构建、Node契约对照、真实MySQL确认幂等/Lease/HTTP、真实Qdrant和模型链路已通过。Vue验证了真实检索轨迹、刷新恢复、明确确认和取消中断。
 
-### 4. 历史上下文为什么不是“硬说自己做了 RAG”？
-当前实现是数据库检索最近历史记录后拼接到 Prompt，属于 **history-context augmentation（历史上下文增强）**。它有真实业务价值，但没有 embedding、向量检索与召回排序，所以不应包装成向量 RAG。
+固定12个检索问题中10个有正例，宏平均Recall@5：Keyword 0.725、Dense 0.950、RRF 0.950、Rerank 0.850。最终这次六例真实Agent均通过工具选择/来源/任务判据；Unsupported Claim Rate因缺逐句人工标签为N/A。**当前重排序在这组样本中未优于Dense/RRF，不宣传虚构提升比例。** 完整结果见AGENT_EVALUATION.md与backend/eval/results/latest.json。
 
-### 5. AI 重写为什么不自动覆盖数据库？
-AI 输出可能不符合用户预期。系统先流式生成候选稿，在前端预览/编辑，只有用户点击“保存到数据库”才更新原周报，这是 Human-in-the-loop（人在回路）设计。
+## 仍有的限制
 
-### 6. 当前限流有什么工程边界？
-限流存在 Node 进程内存中，单实例有效；多实例部署时各实例状态不共享。生产环境可以把限流计数迁移到 Redis。这是项目可以继续扩展的工程点，而不是为了堆技术而强行引入 Redis。
+- 关键词最多50候选；在线补索引最多12份近期记录，预索引最多最近200份；Dense只覆盖已索引且当前hash有效的记录，不承诺全历史。
+- 用户并发与限流是进程内；Run CAS保护同一requestKey，但不等于跨实例用户配额。
+- 重跑有新预算、沿用runId并增加attempt，最多三次；不承诺文本完全相同。
+- 没有周报周期/版本字段、正式计划状态表或自动提醒。创建时间不是工作周期。
+- Evidence证明来源，不保证全部语义蕴含；状态检查保守，复杂别名可能unconfirmed。
+- CPU模型线程开始后不能强制杀掉，取消丢弃迟到结果且限制并发；MySQL/Qdrant已发出操作可能继续。
+- Run/Trace/向量缓存需按运维保留策略维护；草稿七天过期；没有生产多实例压力或线上SLA验收。
+- 前端仍有较大bundle提示；JWT仍在localStorage，PDF为浏览器截图导出；本项目是作品集，不把本地验收说成完整生产治理。
 
-## 推荐简历描述
-
-> **AI 智能工作复盘平台｜独立开发**  
-> Vue3 + TypeScript + Node.js/Express + MySQL + JWT + DeepSeek API
->
-> - 设计 JWT 鉴权与用户数据隔离链路，使用 bcrypt 哈希密码，并以 `req.user.userId` 约束周报 CRUD 权限。
-> - 实现 DeepSeek SSE 流式代理，前端基于 ReadableStream / TextDecoder / buffer 解析增量数据，并支持 AbortController 中止生成。
-> - 将 AI 生成结果持久化至 MySQL，完成历史周报查询、编辑、删除及 401 会话失效处理。
-> - 增加历史上下文增强，在生成周报时检索用户最近 3 份记录辅助识别跨周工作连续性，并通过 Prompt 约束避免历史事实污染。
-> - 实现 AI 二次编辑与跨周趋势复盘，对历史周报进行专业化/精简/OKR 重写，并基于最近 6 份周报生成工作主线与计划承接分析。
-> - 对 AI 接口增加按用户限流，降低重复请求导致的模型调用成本。
-
-## 后续可继续升级，但不是当前版本必须项
-
-- Redis 分布式限流 / 缓存
-- Docker + CI/CD
-- 真正的 embedding + vector database RAG
-- AI 评测集与 Prompt 回归测试
-- 分页 / 搜索 / 统计仪表盘
-
-这些技术应在出现对应业务或工程需求时再加入，不建议为了“技术栈数量”盲目堆叠。
-
-## 工程化附加项
-
-项目还提供了：
-
-- `.github/workflows/ci.yml`：GitHub Actions 自动执行后端测试与前端构建。
-- `docker-compose.yml`：可选的一键容器化方案（Vue/Nginx + Express + MySQL）。
-- `server/tests/`：使用 Node.js 内置 test runner 做 Prompt 约束回归测试。
-- `server/sql/`：数据库建表与索引脚本。
-
-> 注意：Docker / CI 文件已提供，但在你真正跑通 Docker 或把仓库推到 GitHub Actions 验证前，不建议直接在简历上写“熟练使用 Docker / CI/CD”。先跑通再写，项目会更经得住追问。
+后续进入冻结：只修Bug、性能优化、测试完善和学习。履历只写真实代码与评估支持的能力，禁止零幻觉、百分之百通用准确率或未测得提升。

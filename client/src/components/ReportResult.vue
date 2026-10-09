@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { marked } from 'marked'
+import { safeMarkdown } from '../utils/safeMarkdown'
 import { ElMessage } from 'element-plus'
 import html2pdf from 'html2pdf.js'
 
 const props = defineProps<{
   content: string
   loading: boolean
+  ready?: boolean
 }>()
 
 const emit = defineEmits<{
   stop: []
 }>()
 
-const html = computed(() => marked.parse(props.content || ''))
+const html = computed(() => safeMarkdown(props.content))
 
 async function copyContent() {
   if (!props.content) return
@@ -42,25 +43,30 @@ async function exportPdf() {
 
 <template>
   <section class="card result">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
-      <h2 class="card-title" style="margin-bottom:0;">AI 生成结果</h2>
+    <div class="card-heading-row result-heading">
+      <h2 class="card-title">周报预览</h2>
 
-      <div style="display:flex;gap:8px;">
+      <div class="inline-actions result-actions">
         <el-button v-if="loading" type="danger" plain @click="emit('stop')">
           停止生成
         </el-button>
-        <el-button v-if="content" @click="copyContent">
+        <el-button v-if="content" :disabled="loading || !ready" @click="copyContent">
           复制
         </el-button>
-        <el-button v-if="content" @click="exportPdf">
+        <el-button v-if="content" :disabled="loading || !ready" @click="exportPdf">
           导出 PDF
         </el-button>
       </div>
     </div>
 
+    <p v-if="content && !ready" class="section-desc">当前为生成预览，只有完整生成并通过校验后才可保存、复制或导出。</p>
     <div v-if="content" id="result-content" class="result-body" v-html="html" />
     <div v-else class="result-placeholder">
-      {{ loading ? 'AI 正在生成，请稍候...' : '填写左侧内容后开始生成' }}
+      <div class="result-empty-note">
+        <svg viewBox="0 0 48 56" fill="none" aria-hidden="true"><path d="M9 4h30v42H9zM4 12v40h29M16 15h16M16 23h16M16 31h10" stroke="currentColor" stroke-width="1.5" /></svg>
+        <p>{{ loading ? '正在整理本周记录…' : '给这一周，留一份记录。' }}</p>
+        <span>{{ loading ? '生成的内容将逐步显示在这里。' : '填写工作、问题与计划，生成后在这里检查并确认。' }}</span>
+      </div>
     </div>
   </section>
 </template>

@@ -1,8 +1,2 @@
-declare module 'html2pdf.js' {
-  const html2pdf: () => {
-    set(options: Record<string, unknown>): any
-    from(element: HTMLElement): any
-    save(): Promise<void>
-  }
-  export default html2pdf
-}
+// html2pdf.js 0.14+ supplies its own Worker and option types.
+export {}
